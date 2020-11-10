@@ -1,0 +1,34 @@
+{
+  "name": "passport-hsdp-oauth2",
+  "version": "0.1.0",
+  "description": "HSDP OAuth2 authentication strategy for Passport.",
+  "license": "AGPL-3.0-or-later",
+  "keywords": [
+    "passport",
+    "hsdp",
+    "authentication"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pshinoj/passport-hsdp-oauth2.git"
+  },
+  "author": {
+    "name": "Shinoj Prabhakaran",
+    "email": "shinoj.prabhakaran@gmail.com",
+    "url": "http://hsdp.io"
+  },
+  "licenses": [
+    {
+      "type": "GNU GENERAL PUBLIC LICENSE",
+      "url": "https://www.gnu.org/licenses/"
+    }
+  ],
+  "main": "./lib/passport-hsdp",
+  "dependencies": {
+    "pkginfo": "^0.4.1",
+    "passport-oauth2": "^1.5.0"
+  },
+  "engines": {
+    "node": ">= 10.0.0"
+  }
+}
