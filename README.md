@@ -1,5 +1,5 @@
 # passport-hsdp-oauth2
-Passport strategy for authenticating with HSDP using the OAuth 2.0 API.
+Passport strategy for authenticating with HSDP using the OAuth 2.0 authorize model.
 
 This module lets you authenticate using HSDP in your Node.js applications. By plugging into Passport, HSDP authentication can be easily integrated into any application or framework that supports expressjs.
 
