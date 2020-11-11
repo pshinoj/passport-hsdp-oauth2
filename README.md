@@ -9,14 +9,14 @@ $ npm install passport-hsdp-oauth2
 The HSDP authentication strategy authenticates users using a HSDP account. The strategy requires a verify callback, which accepts these credentials and OAuth2 authorize call is done by specifying a client_id, client_secret, scope(if any) and callback URL.
 ```
 passport.use(new HsdpStrategy({
-    clientID: HSDP_CLIENT_ID,
-    clientSecret: HSDP_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/hsdp/callback"
-  },
+      domain: process.env.HSDP_IAM_DOMAIN,
+      clientID: process.env.HSDP_IAM_CLIENT_ID,
+      clientSecret: process.env.HSDP_IAM_CLIENT_SECRET,
+      callbackURL: process.env.HSDP_IAM_CALLBACK_URL,
+      apiVersion: process.env.HSDP_IAM_VERSION
+    },
   function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate({ hsdpId: profile.username }, function (err, user) {
       return done(err, user);
-    });
   }
 ));
 ```
@@ -25,13 +25,30 @@ Use passport.authenticate(), specifying the `hsdp` strategy, to authenticate req
 
 For example, as route middleware in an Express application:
 ```
-app.get('/auth/hsdp',
-  passport.authenticate('hsdp'));
+app.get('/auth/login',
+      passport.authenticate("hsdp", {
+        prompt: "login"
+    }),
+    (req, res) => {
+        res.redirect("/");
+    });
 
 app.get('/auth/hsdp/callback', 
-  passport.authenticate('hsdp', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+    passport.authenticate("hsdp", (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect("/auth/login");
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            const returnTo = req.session.returnTo;
+            delete req.session.returnTo;
+            res.redirect(returnTo || "/");
+        });
+    })(req, res, next);
+});
 ```
